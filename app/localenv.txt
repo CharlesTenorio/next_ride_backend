@@ -1,0 +1,1 @@
+ heroku config:push --app backend-bike
