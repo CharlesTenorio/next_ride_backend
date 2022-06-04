@@ -1,9 +1,10 @@
 package config
 
 import (
-	"github.com/joho/godotenv"
 	"log"
 	"os"
+
+	"github.com/joho/godotenv"
 )
 
 func EnvCloudName() string {
@@ -36,4 +37,13 @@ func EnvCloudUploadFolder() string {
 		log.Fatal("Error loading .env file")
 	}
 	return os.Getenv("CLOUDINARY_UPLOAD_FOLDER")
+}
+
+func EnvPort() string {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+	return os.Getenv("PORT")
+
 }

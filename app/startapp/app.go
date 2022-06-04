@@ -2,10 +2,11 @@ package startapp
 
 import (
 	"fmt"
-	"gitlab.com/charlestenorios/next_ride_backend/app/controllers"
-	"gitlab.com/charlestenorios/next_ride_backend/app/service"
 	"log"
 	"net/http"
+
+	"gitlab.com/charlestenorios/next_ride_backend/app/controllers"
+	"gitlab.com/charlestenorios/next_ride_backend/app/service"
 
 	"encoding/json"
 
@@ -15,8 +16,7 @@ import (
 )
 
 func Start() {
-	//db := repository.GroupMemoryDb{Groups: []domain.Group{}}
-	//repositoryMemory := repository.NewGroupRepositoryMemory(db)
+
 	db, err := database.Conn()
 
 	e := echo.New()
@@ -133,6 +133,6 @@ func Start() {
 	e.POST("/file", controllers.FileUpload)
 	e.POST("/remote", controllers.RemoteUpload)
 
-	e.Logger.Fatal(e.Start(":1323"))
+	e.Logger.Fatal(e.Start(":3000"))
 
 }

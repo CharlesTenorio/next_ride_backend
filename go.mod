@@ -1,6 +1,6 @@
 module gitlab.com/charlestenorios/next_ride_backend
 
-go 1.18
+go 1.17
 
 require (
 	github.com/cloudinary/cloudinary-go v1.7.0
