@@ -1,2 +1,2 @@
 Procrelease: ./release-task.sh
-web: bin/backend-bike
+web: app/backend-bike

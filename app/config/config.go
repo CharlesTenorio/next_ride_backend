@@ -3,6 +3,7 @@ package config
 import (
 	"log"
 	"os"
+	"strconv"
 
 	"github.com/joho/godotenv"
 )
@@ -39,11 +40,57 @@ func EnvCloudUploadFolder() string {
 	return os.Getenv("CLOUDINARY_UPLOAD_FOLDER")
 }
 
-func EnvPort() string {
+func EnvDbHeroku() string {
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
-	return os.Getenv("PORT")
+	return os.Getenv("DATABASE_URL")
+
+}
+
+func EnvDev() bool {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+	dev, _ := strconv.ParseBool(os.Getenv("DEV"))
+	return dev
+
+}
+
+func EnvLocalHostDb() string {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+	return os.Getenv("SQL_HOST")
+
+}
+
+func EnvUsrDb() string {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+	return os.Getenv("SQL_USER")
+
+}
+
+func EnvSqlPassword() string {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+	return os.Getenv("SQL_PASSWORD")
+
+}
+
+func EnvLocalDb() string {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+	return os.Getenv("SQL_DATABASE")
 
 }
