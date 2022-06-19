@@ -22,9 +22,9 @@ type Cyclist struct {
 	Active           bool      `json:"ativo"`
 	Img              string    `json:"foto"`
 	ParticipantType  string    `json:"tipo_participante"`
-	Pedaling         int64     `json:"qtd_pedaladas"`
-	Tours            int64     `json:"qtd_pedaladas_real"`
-	Travels          int64     `json:"qtd_viagens"`
+	Pedaling         int       `json:"qtd_pedaladas"`
+	Tours            int       `json:"qtd_pedaladas_real"`
+	Travels          int       `json:"qtd_viagens"`
 }
 
 type CyclistsRepository interface {
@@ -32,8 +32,8 @@ type CyclistsRepository interface {
 	GetByName(name string) (Cyclist, error)
 	GetByCpf(cpf string) (Cyclist, error)
 	Create(Cyclist Cyclist) (Cyclist, error)
-	Update(id, idGroup, name, Cpf string, birth time.Time, email, bloadType, healthPlan, contactEmergency, gotToKnow string,
-		active bool, img, participantType string, Pedaling, Tours, Travels int64) (Cyclist, error)
+	UpdateCyclist(id, idGroup, name, Cpf string, birth time.Time, email, bloadType, healthPlan, contactEmergency, gotToKnow string,
+		active bool, img, participantType string, pedaling, tours, travels int) (Cyclist, error)
 	Delete(id string) (string, error)
 	FindAll() ([]Cyclist, error)
 }

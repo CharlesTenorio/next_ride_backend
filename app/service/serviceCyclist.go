@@ -11,7 +11,7 @@ type CyclistService struct {
 	Repository domain.CyclistsRepository
 }
 
-func NewCysistService(repository domain.CyclistsRepository) *CyclistService {
+func NewCycistService(repository domain.CyclistsRepository) *CyclistService {
 	return &CyclistService{Repository: repository}
 }
 
@@ -41,7 +41,7 @@ func (c *CyclistService) GetByCpf(cpf string) (domain.Cyclist, error) {
 	return cyclist, nil
 }
 
-func (c *CyclistService) Create(id, idGroup, name, cpf string, birth time.Time, email, bloodType, healthPlan, contactEmergency, gotToKnow, img, participantType string) (domain.Cyclist, error) {
+func (c *CyclistService) Create(idGroup, name, cpf string, birth time.Time, email, bloodType, healthPlan, contactEmergency, gotToKnow, img, participantType string) (domain.Cyclist, error) {
 	cyclist := domain.NewCyclist()
 	cyclist.IdGroup = idGroup
 	cyclist.Name = name
@@ -71,14 +71,12 @@ func (c *CyclistService) FindAll() ([]domain.Cyclist, error) {
 	return cyclist, nil
 }
 
-func (c *CyclistService) Update(id, idGroup, name, cpf string, birth time.Time,
-	email, bloodType, healthPlan, contactEmergency, gotToKnow string,
-	active bool, img, participantType string, pedaling,
-	tours, travels int64) (domain.Cyclist, error) {
+func (c *CyclistService) UpdateCyclist(id, idGroup, name, cpf string, birth time.Time, email, bloodType, healthPlan,
+	contactEmergency, gotToKnow string, active bool, img, participantType string, pedaling,
+	tours, travels int) (domain.Cyclist, error) {
 
-	cycli, err := c.Repository.Update(id, idGroup, name, cpf, birth, email, bloodType, healthPlan, contactEmergency, gotToKnow,
+	cycli, err := c.Repository.UpdateCyclist(id, idGroup, name, cpf, birth, email, bloodType, healthPlan, contactEmergency, gotToKnow,
 		active, img, participantType, pedaling, tours, travels)
-	fmt.Println(name, id)
 
 	if err != nil {
 		return domain.Cyclist{}, err

@@ -3,8 +3,6 @@ package repository
 import (
 	"database/sql"
 	"fmt"
-	"time"
-
 	"gitlab.com/charlestenorios/next_ride_backend/app/domain"
 )
 
@@ -84,7 +82,9 @@ func (c *CysclistRepositoryPsql) GetByName(name string) (domain.Cyclist, error) 
 
 func (c *CysclistRepositoryPsql) Create(cyclist domain.Cyclist) (domain.Cyclist, error) {
 
-	stmt, err := c.db.Prepare("INSERT INTO cyclist (id_cyclist, id_group, cyclist_name, cpf, birth, email, blood_type, health_plan, contact_emergency, contact_fone, got_to_know, create_at, active, img, participant_type, pedaling, tours, travels)" +
+	stmt, err := c.db.Prepare("INSERT INTO cyclist (id_cyclist, id_group, cyclist_name, cpf, birth, email," +
+		" blood_type, health_plan, contact_emergency, contact_fone, got_to_know, create_at, active, img, " +
+		"	participant_type, pedaling, tours, travels)" +
 		" VALUES($1, $2, $3, $4, $5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17)")
 	if err != nil {
 		fmt.Print(err.Error())
@@ -128,11 +128,7 @@ func (c *CysclistRepositoryPsql) FindAll() ([]domain.Cyclist, error) {
 	return cyclists, nil
 }
 
-func (c *CysclistRepositoryPsql) Update(id, idGroup, name, cpf string, birth time.Time,
-	email, bloodType, healthPlan, contactEmergency, gotToKnow string,
-	createAt time.Time, active bool, img, participantType string, pedaling,
-	tours, travels int64) (domain.Cyclist, error) {
-	var cyclist domain.Cyclist
+func (c *CysclistRepositoryPsql) UpdateCyclist(cyclist domain.Cyclist) (domain.Cyclist, error) {
 
 	stmt, err := c.db.Prepare("UPDATE cyclist" +
 		"SET id_group=$2, cyclist_name=$3, cpf=$4, birth=$5, email=$6, blood_type=$7, health_plan=$8," +
@@ -145,7 +141,10 @@ func (c *CysclistRepositoryPsql) Update(id, idGroup, name, cpf string, birth tim
 		return domain.Cyclist{}, err
 
 	}
-	_, err = stmt.Exec(name, id)
+	_, err = stmt.Exec(cyclist.Id, cyclist.IdGroup, cyclist.Name, cyclist.Cpf, cyclist.Birth, cyclist.Email,
+		cyclist.BloodType, cyclist.HealthPlan, cyclist.ContactEmergency, cyclist.GotToKnow,
+		cyclist.Active, cyclist.Img, cyclist.ParticipantType, cyclist.Pedaling,
+		cyclist.Tours, cyclist.Travels)
 	if err != nil {
 		return domain.Cyclist{}, err
 	}
