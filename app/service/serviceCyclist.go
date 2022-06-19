@@ -2,20 +2,20 @@ package service
 
 import (
 	"fmt"
-	"time"
-
 	"gitlab.com/charlestenorios/next_ride_backend/app/domain"
+	"gitlab.com/charlestenorios/next_ride_backend/app/repository"
+	"time"
 )
 
 type CyclistService struct {
 	Repository domain.CyclistsRepository
 }
 
-func NewCycistService(repository domain.CyclistsRepository) *CyclistService {
+func NewCycistService(repository *repository.CysclistRepositoryPsql) *CyclistService {
 	return &CyclistService{Repository: repository}
 }
 
-func (c *CyclistService) findById(id string) (domain.Cyclist, error) {
+func (c *CyclistService) Get(id string) (domain.Cyclist, error) {
 	cyclist, error := c.Repository.Get(id)
 	if error != nil {
 		return domain.Cyclist{}, error
@@ -23,7 +23,7 @@ func (c *CyclistService) findById(id string) (domain.Cyclist, error) {
 	return cyclist, nil
 }
 
-func (c *CyclistService) findByName(name string) (domain.Cyclist, error) {
+func (c *CyclistService) GetByName(name string) (domain.Cyclist, error) {
 	name = "'" + name + "%'"
 	cyclist, error := c.Repository.GetByName(name)
 	if error != nil {
@@ -71,9 +71,7 @@ func (c *CyclistService) FindAll() ([]domain.Cyclist, error) {
 	return cyclist, nil
 }
 
-func (c *CyclistService) UpdateCyclist(id, idGroup, name, cpf string, birth time.Time, email, bloodType, healthPlan,
-	contactEmergency, gotToKnow string, active bool, img, participantType string, pedaling,
-	tours, travels int) (domain.Cyclist, error) {
+func (c *CyclistService) UpdateCyclist(id string, idGroup string, name string, cpf string, birth time.Time, email string, bloodType string, healthPlan string, contactEmergency string, gotToKnow string, active bool, img string, participantType string, pedaling int, tours int, travels int) (domain.Cyclist, error) {
 
 	cycli, err := c.Repository.UpdateCyclist(id, idGroup, name, cpf, birth, email, bloodType, healthPlan, contactEmergency, gotToKnow,
 		active, img, participantType, pedaling, tours, travels)
@@ -81,7 +79,6 @@ func (c *CyclistService) UpdateCyclist(id, idGroup, name, cpf string, birth time
 	if err != nil {
 		return domain.Cyclist{}, err
 	}
-
 	return cycli, nil
 }
 

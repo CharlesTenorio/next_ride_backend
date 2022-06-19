@@ -2,7 +2,6 @@ package service
 
 import (
 	"fmt"
-
 	"gitlab.com/charlestenorios/next_ride_backend/app/domain"
 )
 
