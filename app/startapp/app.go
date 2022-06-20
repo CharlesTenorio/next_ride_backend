@@ -346,6 +346,87 @@ func Start() {
 		return c.String(http.StatusOK, string(b))
 	})
 
+	e.PUT("/update_pedaling", func(c echo.Context) error {
+
+		if err != nil {
+			return c.String(http.StatusInternalServerError, string(err.Error()))
+		}
+
+		cyclistRepositorySql := repository.NewCyclistRepositoryPsql(db)
+		serv := service.NewCycistService(cyclistRepositorySql)
+		id := c.FormValue("idCyclist")
+		pedaling := c.FormValue("pedaling ")
+		intPedaling, err := strconv.Atoi(pedaling)
+
+		if err != nil {
+			return c.String(http.StatusInternalServerError, string(err.Error()))
+		}
+
+		cycli, _ := serv.UpdatePedaling(id, intPedaling)
+
+		b, err := json.Marshal(cycli)
+
+		if err != nil {
+			return c.String(http.StatusInternalServerError, string(err.Error()))
+
+		}
+		return c.String(http.StatusOK, string(b))
+	})
+
+	e.PUT("/update_tour", func(c echo.Context) error {
+
+		if err != nil {
+			return c.String(http.StatusInternalServerError, string(err.Error()))
+		}
+
+		cyclistRepositorySql := repository.NewCyclistRepositoryPsql(db)
+		serv := service.NewCycistService(cyclistRepositorySql)
+		id := c.FormValue("idCyclist")
+		tour := c.FormValue("tour")
+		intTour, err := strconv.Atoi(tour)
+
+		if err != nil {
+			return c.String(http.StatusInternalServerError, string(err.Error()))
+		}
+
+		cycli, _ := serv.UpdateTours(id, intTour)
+
+		b, err := json.Marshal(cycli)
+
+		if err != nil {
+			return c.String(http.StatusInternalServerError, string(err.Error()))
+
+		}
+		return c.String(http.StatusOK, string(b))
+	})
+
+	e.PUT("/update_travel", func(c echo.Context) error {
+
+		if err != nil {
+			return c.String(http.StatusInternalServerError, string(err.Error()))
+		}
+
+		cyclistRepositorySql := repository.NewCyclistRepositoryPsql(db)
+		serv := service.NewCycistService(cyclistRepositorySql)
+		id := c.FormValue("idCyclist")
+		travel := c.FormValue("tour")
+		intTravel, err := strconv.Atoi(travel)
+
+		if err != nil {
+			return c.String(http.StatusInternalServerError, string(err.Error()))
+		}
+
+		cycli, _ := serv.UpdateTours(id, intTravel)
+
+		b, err := json.Marshal(cycli)
+
+		if err != nil {
+			return c.String(http.StatusInternalServerError, string(err.Error()))
+
+		}
+		return c.String(http.StatusOK, string(b))
+	})
+
 	// end cicystes
 
 	e.POST("/file", controllers.FileUpload)

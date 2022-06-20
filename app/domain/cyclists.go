@@ -2,9 +2,10 @@ package domain
 
 import (
 	"fmt"
-	uuid "github.com/satori/go.uuid"
 	"net/http"
 	"time"
+
+	uuid "github.com/satori/go.uuid"
 )
 
 type Cyclist struct {
@@ -32,10 +33,12 @@ type CyclistsRepository interface {
 	GetByName(name string) (Cyclist, error)
 	GetByCpf(cpf string) (Cyclist, error)
 	Create(Cyclist Cyclist) (Cyclist, error)
-	UpdateCyclist(id, idGroup, name, Cpf string, birth time.Time, email, bloadType, healthPlan, contactEmergency, gotToKnow string,
-		active bool, img, participantType string, pedaling, tours, travels int) (Cyclist, error)
+	UpdateCyclist(Cyclist Cyclist) (Cyclist, error)
 	Delete(id string) (string, error)
 	FindAll() ([]Cyclist, error)
+	UpdatePedaling(id string, newPedaling int) (string, error)
+	UpdateTours(id string, newTours int) (string, error)
+	UpdateTravels(id string, newTravel int) (string, error)
 }
 
 func NewCyclist() *Cyclist {

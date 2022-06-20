@@ -3,6 +3,7 @@ package repository
 import (
 	"database/sql"
 	"fmt"
+
 	"gitlab.com/charlestenorios/next_ride_backend/app/domain"
 )
 
@@ -153,6 +154,88 @@ func (c *CysclistRepositoryPsql) UpdateCyclist(cyclist domain.Cyclist) (domain.C
 		return domain.Cyclist{}, err
 	}
 	return cyclist, nil
+}
+
+func (c *CysclistRepositoryPsql) UpdatePedaling(id string, newPedaling int) (string, error) {
+	cli, err := c.Get(id)
+	if err != nil {
+		fmt.Print(err)
+		message := fmt.Sprintf("Hi, %v. deu ruim", err.Error())
+		return message, nil
+	}
+	new_value := cli.Pedaling + newPedaling
+
+	stmt, err := c.db.Prepare("UPDATE cyclist SET  pedaling=$2 WHERE id_cyclist=$1;")
+	if err != nil {
+		fmt.Print(err)
+
+		return "deu erro", err
+
+	}
+	_, err = stmt.Exec(id, new_value)
+	if err != nil {
+		return "deu ruim", err
+	}
+	err = stmt.Close()
+	if err != nil {
+		return "deu ruim", err
+	}
+	return "pedaldas ataulizadad com sucesso", nil
+}
+
+func (c *CysclistRepositoryPsql) UpdateTours(id string, newTour int) (string, error) {
+	cli, err := c.Get(id)
+	if err != nil {
+		fmt.Print(err)
+		message := fmt.Sprintf("Hi, %v. deu ruim", err.Error())
+		return message, nil
+	}
+	new_value := cli.Tours + newTour
+
+	stmt, err := c.db.Prepare("UPDATE cyclist SET tours=$2 WHERE id_cyclist=$1;")
+	if err != nil {
+		fmt.Print(err)
+
+		return "deu erro", err
+
+	}
+
+	_, err = stmt.Exec(id, new_value)
+	if err != nil {
+		return "deu ruim", err
+	}
+	err = stmt.Close()
+	if err != nil {
+		return "deu ruim", err
+	}
+	return "Passeio ataulizados com sucesso", nil
+}
+
+func (c *CysclistRepositoryPsql) UpdateTravels(id string, newTravel int) (string, error) {
+	cli, err := c.Get(id)
+	if err != nil {
+		fmt.Print(err)
+		message := fmt.Sprintf("Hi, %v. deu ruim", err.Error())
+		return message, nil
+	}
+	new_value := cli.Travels + newTravel
+
+	stmt, err := c.db.Prepare("UPDATE cyclist SET travels=$2 WHERE id_cyclist=$1;")
+	if err != nil {
+		fmt.Print(err)
+
+		return "deu erro", err
+
+	}
+	_, err = stmt.Exec(id, new_value)
+	if err != nil {
+		return "deu ruim", err
+	}
+	err = stmt.Close()
+	if err != nil {
+		return "deu ruim", err
+	}
+	return "viagens ataulizadas com sucesso", nil
 }
 
 func (g *CysclistRepositoryPsql) Delete(id string) (string, error) {
