@@ -1,20 +1,18 @@
 package startapp
 
 import (
+	"encoding/json"
 	"fmt"
+	"github.com/labstack/echo/v4"
+	"gitlab.com/charlestenorios/next_ride_backend/app/controllers"
+	"gitlab.com/charlestenorios/next_ride_backend/app/database"
+	"gitlab.com/charlestenorios/next_ride_backend/app/handles"
+	"gitlab.com/charlestenorios/next_ride_backend/app/repository"
+	"gitlab.com/charlestenorios/next_ride_backend/app/service"
 	"log"
 	"net/http"
 	"strconv"
 	"time"
-
-	"gitlab.com/charlestenorios/next_ride_backend/app/controllers"
-	"gitlab.com/charlestenorios/next_ride_backend/app/service"
-
-	"encoding/json"
-
-	"github.com/labstack/echo/v4"
-	"gitlab.com/charlestenorios/next_ride_backend/app/database"
-	"gitlab.com/charlestenorios/next_ride_backend/app/repository"
 )
 
 func Start() {
@@ -22,112 +20,11 @@ func Start() {
 	db, err := database.Conn()
 
 	e := echo.New()
-	e.POST("/create_group", func(c echo.Context) error {
-
-		if err != nil {
-			fmt.Print("deu merda na conexao", string(err.Error()))
-			return c.String(http.StatusInternalServerError, string(err.Error()))
-		}
-
-		repositorySql := repository.NewGroupRepositoryPsql(db)
-		serv := service.NewGroupService(repositorySql)
-		name := c.FormValue("name")
-
-		if name == "" {
-			return echo.NewHTTPError(http.StatusBadRequest, err.Error())
-		}
-
-		grup, _ := serv.Create(name)
-
-		b, err := json.Marshal(grup)
-
-		if err != nil {
-			return c.String(http.StatusInternalServerError, string(err.Error()))
-
-		}
-		return c.String(http.StatusOK, string(b))
-	})
-
-	e.GET("/list_by_id_group", func(c echo.Context) error {
-
-		if err != nil {
-			return c.String(http.StatusInternalServerError, string(err.Error()))
-		}
-
-		repositorySql := repository.NewGroupRepositoryPsql(db)
-		serv := service.NewGroupService(repositorySql)
-		id := c.FormValue("id")
-		grup, _ := serv.Repository.Get(id)
-
-		b, err := json.Marshal(grup)
-
-		if err != nil {
-			return c.String(http.StatusInternalServerError, string(err.Error()))
-
-		}
-		return c.String(http.StatusOK, string(b))
-	})
-
-	e.GET("/all", func(c echo.Context) error {
-
-		if err != nil {
-			return c.String(http.StatusInternalServerError, string(err.Error()))
-		}
-
-		repositorySql := repository.NewGroupRepositoryPsql(db)
-		serv := service.NewGroupService(repositorySql)
-		grup, _ := serv.Repository.FindAll()
-
-		b, err := json.Marshal(grup)
-
-		if err != nil {
-			return c.String(http.StatusInternalServerError, string(err.Error()))
-
-		}
-		return c.String(http.StatusOK, string(b))
-	})
-
-	e.POST("/update", func(c echo.Context) error {
-
-		if err != nil {
-			log.Fatal("deu ruim na conexao do banco")
-		}
-
-		repositorySql := repository.NewGroupRepositoryPsql(db)
-		serv := service.NewGroupService(repositorySql)
-		id := c.FormValue("id")
-		name := c.FormValue("name")
-
-		grup, _ := serv.Update(id, name)
-
-		b, err := json.Marshal(grup)
-
-		if err != nil {
-			return c.String(http.StatusInternalServerError, string(err.Error()))
-
-		}
-		return c.String(http.StatusOK, string(b))
-	})
-
-	e.DELETE("/delete", func(c echo.Context) error {
-
-		if err != nil {
-			return c.String(http.StatusInternalServerError, string(err.Error()))
-		}
-
-		repositorySql := repository.NewGroupRepositoryPsql(db)
-		serv := service.NewGroupService(repositorySql)
-		id := c.FormValue("id")
-		grup, _ := serv.Delete(id)
-
-		b, err := json.Marshal(grup)
-
-		if err != nil {
-			return c.String(http.StatusInternalServerError, string(err.Error()))
-
-		}
-		return c.String(http.StatusOK, string(b))
-	})
+	e.POST("/create_group", handles.CreateGroup)
+	e.GET("/get_id_group/:id", handles.GetByIdGroup)
+	e.GET("/all", handles.GetAllGroup)
+	e.POST("/update/:id/name", handles.UpdateGroup)
+	e.DELETE("/delete:id", handles.DeleteGroup)
 
 	// endpoints ciclysts
 	e.POST("/create_cyclist", func(c echo.Context) error {
