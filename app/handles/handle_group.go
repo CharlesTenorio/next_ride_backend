@@ -2,16 +2,17 @@ package handles
 
 import (
 	"encoding/json"
+	"net/http"
+
 	"github.com/labstack/echo/v4"
 	"gitlab.com/charlestenorios/next_ride_backend/app/database"
 	"gitlab.com/charlestenorios/next_ride_backend/app/repository"
 	"gitlab.com/charlestenorios/next_ride_backend/app/service"
-	"net/http"
 )
 
 var db, err = database.Conn()
-var repositorySql = repository.NewGroupRepositoryPsql(db)
-var serv = service.NewGroupService(repositorySql)
+var repositorySql1 = repository.NewGroupRepositoryPsql(db)
+var serv = service.NewGroupService(repositorySql1)
 
 func CreateGroup(c echo.Context) error {
 	name := c.FormValue("name")

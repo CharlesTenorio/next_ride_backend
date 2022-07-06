@@ -13,7 +13,7 @@ func Start() {
 	e.GET("/get_id_group/:id", handles.GetByIdGroup)
 	e.GET("/all", handles.GetAllGroup)
 	e.PUT("/update/:id/name", handles.UpdateGroup)
-	e.DELETE("/delete:id", handles.DeleteGroup)
+	e.DELETE("/delete:/id", handles.DeleteGroup)
 
 	// endpoints ciclysts
 	e.POST("/create_cyclist", handles.CreateCysclis)
@@ -23,9 +23,9 @@ func Start() {
 	e.GET("/find_by_name_cytlist/:name", handles.GetByNameCysclist)
 	e.GET("/find_by_cpf_cytlist/:cpf", handles.GetByCpfCysclist)
 	e.DELETE("/delete_cyclist/:id", handles.DeleteGroup)
-	e.PATCH("/update_pedaling/:id/pedaling", handles.UpdatePedaling)
+	e.PATCH("/update_pedaling/:id/:pedaling", handles.UpdatePedaling)
 	e.PATCH("/update_tour", handles.UpdateTours)
-	e.PATCH("/update_travel/:id/tour", handles.UpdateTravels)
+	e.PATCH("/update_travel/:id/:tour", handles.UpdateTravels)
 
 	// end cicystes
 

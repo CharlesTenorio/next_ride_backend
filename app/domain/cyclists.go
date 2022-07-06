@@ -1,8 +1,8 @@
 package domain
 
 import (
-	"fmt"
-	"net/http"
+	"errors"
+	"strings"
 	"time"
 
 	uuid "github.com/satori/go.uuid"
@@ -54,72 +54,59 @@ func NewCyclist() *Cyclist {
 	return &cyclist
 }
 
-func (c *Cyclist) ValidateName(r *http.Request) error {
+func (cyclist *Cyclist) Prepere() error {
+	if erro := cyclist.Validade(); erro != nil {
+		return erro
+	}
+	cyclist.formatSpace()
+	return nil
+}
+
+func (c *Cyclist) Validade() error {
 	if c.Name == "" {
-		return fmt.Errorf("Nome não informado", http.StatusBadRequest)
+		return errors.New("O Nome o brigatório")
 	}
-	return nil
-}
 
-func (c *Cyclist) ValidateCpf(r *http.Request) error {
 	if c.Cpf == "" {
-		return fmt.Errorf("Cpf não informado", http.StatusBadRequest)
+		return errors.New("O CPF o brigatório")
 	}
-	return nil
-}
 
-func (c *Cyclist) ValidateBirth(r *http.Request) error {
 	if c.Birth.IsZero() {
-		return fmt.Errorf("Nascimento não informado", http.StatusBadRequest)
+		return errors.New(" Nascimento é o brigatório")
 	}
-	return nil
-}
 
-func (c *Cyclist) ValidateEmail(r *http.Request) error {
 	if c.Email == "" {
-		return fmt.Errorf("Email não informado", http.StatusBadRequest)
+		return errors.New("Email não informado")
 	}
-	return nil
-}
 
-func (c *Cyclist) ValidateBloodType(r *http.Request) error {
 	if c.BloodType == "" {
-		return fmt.Errorf("Tipo sanguineo não informado", http.StatusBadRequest)
+		return errors.New("Tipo sanguineo não informado")
 	}
-	return nil
-}
 
-func (c *Cyclist) ValidateHealthPlan(r *http.Request) error {
 	if c.HealthPlan == "" {
-		return fmt.Errorf("Plano de saúde não informado", http.StatusBadRequest)
+		return errors.New("Plano de saúde não informado")
 	}
-	return nil
-}
 
-func (c *Cyclist) ValidateContactEmergency(r *http.Request) error {
 	if c.ContactEmergency == "" {
-		return fmt.Errorf("Contato de emergência não informado", http.StatusBadRequest)
+		return errors.New("Contato de emergência não informado")
 	}
-	return nil
-}
 
-func (c *Cyclist) ValidarFicouSanbendo(r *http.Request) error {
 	if c.GotToKnow == "" {
-		return fmt.Errorf("Ficou sanbendo não informado", http.StatusBadRequest)
+		return errors.New("Ficou sanbendo não informado")
 	}
-	return nil
-}
 
-func (c *Cyclist) ValidateImg(r *http.Request) error {
 	if c.Img == "" {
-		return fmt.Errorf("Foto não informada", http.StatusBadRequest)
+		return errors.New("Foto não informada")
+	}
+
+	if c.ParticipantType == "" {
+		return errors.New("Tipo participante não informado")
 	}
 	return nil
+
 }
 
-func (c *Cyclist) ValidarTipoParticipante(r *http.Request) error {
-	if c.ParticipantType == "" {
-		return fmt.Errorf("Tipo participante não informado", http.StatusBadRequest)
-	}
-	return nil
+func (cyclist *Cyclist) formatSpace() {
+	cyclist.Name = strings.TrimSpace(cyclist.Name)
+	cyclist.Email = strings.TrimSpace(cyclist.Email)
 }
