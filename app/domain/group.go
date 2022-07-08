@@ -1,6 +1,9 @@
 package domain
 
 import (
+	"errors"
+	"strings"
+
 	uuid "github.com/satori/go.uuid"
 )
 
@@ -23,4 +26,26 @@ func NewGroup() *Group {
 	}
 
 	return &group
+}
+
+func (group *Group) Prepere() error {
+	if erro := group.validade(); erro != nil {
+		return erro
+	}
+	group.formatSpace()
+	return nil
+}
+
+func (g *Group) validade() error {
+	if g.Name == "" {
+		return errors.New("O Nome é o brigatório")
+	}
+
+	return nil
+
+}
+
+func (grupo *Group) formatSpace() {
+	grupo.Name = strings.TrimSpace(grupo.Name)
+
 }

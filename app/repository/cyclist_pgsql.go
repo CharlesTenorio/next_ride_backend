@@ -11,6 +11,8 @@ type CysclistRepositoryPsql struct {
 	db *sql.DB
 }
 
+var validation domain.Cyclist
+
 func NewCyclistRepositoryPsql(db *sql.DB) *CysclistRepositoryPsql {
 	return &CysclistRepositoryPsql{db: db}
 }
@@ -82,6 +84,10 @@ func (c *CysclistRepositoryPsql) GetByName(name string) (domain.Cyclist, error) 
 }
 
 func (c *CysclistRepositoryPsql) Create(cyclist domain.Cyclist) (domain.Cyclist, error) {
+	err := validation.Prepere()
+	if err != nil {
+		return domain.Cyclist{}, err
+	}
 
 	stmt, err := c.db.Prepare("INSERT INTO cyclist (id_cyclist, id_group, cyclist_name, cpf, birth, email," +
 		" blood_type, health_plan, contact_emergency, contact_fone, got_to_know, create_at, active, img, " +
@@ -131,6 +137,10 @@ func (c *CysclistRepositoryPsql) FindAll() ([]domain.Cyclist, error) {
 
 func (c *CysclistRepositoryPsql) UpdateCyclist(cyclist domain.Cyclist) (domain.Cyclist, error) {
 
+	err := validation.Prepere()
+	if err != nil {
+		return domain.Cyclist{}, err
+	}
 	stmt, err := c.db.Prepare("UPDATE cyclist" +
 		"SET id_group=$2, cyclist_name=$3, cpf=$4, birth=$5, email=$6, blood_type=$7, health_plan=$8," +
 		"contact_emergency=$9, contact_fone=$10, got_to_know=$11, create_at=$12," +

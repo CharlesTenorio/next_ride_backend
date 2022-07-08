@@ -55,14 +55,14 @@ func NewCyclist() *Cyclist {
 }
 
 func (cyclist *Cyclist) Prepere() error {
-	if erro := cyclist.Validade(); erro != nil {
+	if erro := cyclist.validade(); erro != nil {
 		return erro
 	}
 	cyclist.formatSpace()
 	return nil
 }
 
-func (c *Cyclist) Validade() error {
+func (c *Cyclist) validade() error {
 	if c.Name == "" {
 		return errors.New("O Nome o brigatório")
 	}

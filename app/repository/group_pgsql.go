@@ -11,6 +11,8 @@ type GroupRepositoryPsql struct {
 	db *sql.DB
 }
 
+var valIDation domain.Group
+
 func NewGroupRepositoryPsql(db *sql.DB) *GroupRepositoryPsql {
 	return &GroupRepositoryPsql{db: db}
 }
@@ -32,6 +34,10 @@ func (g *GroupRepositoryPsql) Get(id string) (domain.Group, error) {
 }
 
 func (g *GroupRepositoryPsql) Create(group domain.Group) (domain.Group, error) {
+	err := valIDation.Prepere()
+	if err != nil {
+		return domain.Group{}, err
+	}
 
 	stmt, err := g.db.Prepare("INSERT INTO pedal_group (id_group, name_group) VALUES($1, $2)")
 	if err != nil {
@@ -69,6 +75,10 @@ func (g *GroupRepositoryPsql) FindAll() ([]domain.Group, error) {
 }
 
 func (g *GroupRepositoryPsql) Update(name, id string) (domain.Group, error) {
+	err := valIDation.Prepere()
+	if err != nil {
+		return domain.Group{}, err
+	}
 	var group domain.Group
 
 	stmt, err := g.db.Prepare("update pedal_group set name_group=$1 where id_group=$2")
