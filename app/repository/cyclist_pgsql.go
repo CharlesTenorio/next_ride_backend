@@ -91,7 +91,7 @@ func (c *CysclistRepositoryPsql) Create(cyclist domain.Cyclist) (domain.Cyclist,
 
 	stmt, err := c.db.Prepare("INSERT INTO cyclist (id_cyclist, id_group, cyclist_name, cpf, birth, email," +
 		" blood_type, health_plan, contact_emergency, contact_fone, got_to_know, create_at, active, img, " +
-		"	participant_type, pedaling, tours, travels)" +
+		"	participant_type, pedaling, tours, travels, id_usr)" +
 		" VALUES($1, $2, $3, $4, $5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17)")
 	if err != nil {
 		fmt.Print(err.Error())
@@ -102,7 +102,7 @@ func (c *CysclistRepositoryPsql) Create(cyclist domain.Cyclist) (domain.Cyclist,
 	_, err = stmt.Exec(cyclist.Id, cyclist.IdGroup, cyclist.Name, cyclist.Cpf, cyclist.Birth,
 		cyclist.Email, cyclist.BloodType, cyclist.HealthPlan, cyclist.ContactEmergency, cyclist.GotToKnow,
 		cyclist.CreateAt, cyclist.Active, cyclist.Img, cyclist.ParticipantType, cyclist.Pedaling,
-		cyclist.Tours, cyclist.Travels)
+		cyclist.Tours, cyclist.Travels, cyclist.IdUsr)
 	if err != nil {
 		return domain.Cyclist{}, err
 	}
@@ -117,7 +117,7 @@ func (c *CysclistRepositoryPsql) FindAll() ([]domain.Cyclist, error) {
 	var cyclist domain.Cyclist
 	var cyclists []domain.Cyclist
 	stmt, err := c.db.Query("SELECT id_cyclist, id_group, cyclist_name, cpf, birth, email, blood_type, health_plan, contact_emergency, contact_fone," +
-		" got_to_know, create_at, active, img, participant_type, pedaling, tours, travels" +
+		" got_to_know, create_at, active, img, participant_type, pedaling, tours, travels. id_usr" +
 		"FROM cyclist order by cyclist_name")
 	if err != nil {
 		fmt.Print(err)
@@ -128,7 +128,7 @@ func (c *CysclistRepositoryPsql) FindAll() ([]domain.Cyclist, error) {
 		err = stmt.Scan(&cyclist.Id, &cyclist.IdGroup, &cyclist.Name, &cyclist.Cpf, &cyclist.Birth,
 			&cyclist.Email, &cyclist.BloodType, &cyclist.HealthPlan, &cyclist.ContactEmergency, &cyclist.GotToKnow,
 			&cyclist.CreateAt, &cyclist.Active, &cyclist.Img, &cyclist.ParticipantType, &cyclist.Pedaling,
-			&cyclist.Tours, &cyclist.Travels)
+			&cyclist.Tours, &cyclist.Travels, &cyclist.IdUsr)
 		cyclists = append(cyclists, cyclist)
 	}
 
@@ -144,7 +144,7 @@ func (c *CysclistRepositoryPsql) UpdateCyclist(cyclist domain.Cyclist) (domain.C
 	stmt, err := c.db.Prepare("UPDATE cyclist" +
 		"SET id_group=$2, cyclist_name=$3, cpf=$4, birth=$5, email=$6, blood_type=$7, health_plan=$8," +
 		"contact_emergency=$9, contact_fone=$10, got_to_know=$11, create_at=$12," +
-		"active=$13, img=$14, participant_type=$15, pedaling=$16, tours=$17, travels=$18" +
+		"active=$13, img=$14, participant_type=$15, pedaling=$16, tours=$17, travels=$18, id_usr=$19" +
 		"WHERE id_cyclist=$1;")
 	if err != nil {
 		fmt.Print(err)
@@ -155,7 +155,7 @@ func (c *CysclistRepositoryPsql) UpdateCyclist(cyclist domain.Cyclist) (domain.C
 	_, err = stmt.Exec(cyclist.Id, cyclist.IdGroup, cyclist.Name, cyclist.Cpf, cyclist.Birth, cyclist.Email,
 		cyclist.BloodType, cyclist.HealthPlan, cyclist.ContactEmergency, cyclist.GotToKnow,
 		cyclist.Active, cyclist.Img, cyclist.ParticipantType, cyclist.Pedaling,
-		cyclist.Tours, cyclist.Travels)
+		cyclist.Tours, cyclist.Travels, cyclist.IdUsr)
 	if err != nil {
 		return domain.Cyclist{}, err
 	}

@@ -6,9 +6,23 @@ CREATE TABLE pedal_group (
 );
 
 
+
+CREATE TABLE pedal_user (
+	id_usr VARCHAR(250) NOT NULL,
+	name VARCHAR(50) NOT NULL,
+	admin BOOLEAN NOT NULL,
+	password VARCHAR(250) NOT NULL,
+	email varchar(150) unique not null,
+	create_at  timestamp not null,
+    active BOOLEAN not null
+);
+
+
+
 CREATE TABLE cyclist (
                          id_cyclist  varchar(250) PRIMARY KEY,
                          id_group varchar(250) NOT NULL,
+						 id_usr varchar(250) UNIQUE NOT NULL REFERENCES pedal_user(id_usr),
                          cyclist_name  varchar ( 80 ) NOT NULL,
                          cpf varchar(15) unique not null,
                          birth date not null,
@@ -19,7 +33,7 @@ CREATE TABLE cyclist (
                          contact_fone varchar(20) not null,
                          got_to_know varchar(50) not null,
                          create_at  timestamp not null,
-                         active bool not null,
+                         active BOOLEAN not null,
                          img varchar(300),
                          participant_type varchar(40) not null,
                          pedaling int,
@@ -29,8 +43,9 @@ CREATE TABLE cyclist (
                              FOREIGN KEY(id_group)
                                  REFERENCES pedal_group(id_group)
 
+
+
 );
-    
 
 
 

@@ -42,7 +42,7 @@ func (c *CyclistService) GetByCpf(cpf string) (domain.Cyclist, error) {
 	return cyclist, nil
 }
 
-func (c *CyclistService) Create(idGroup, name, cpf string, birth time.Time, email, bloodType, healthPlan, contactEmergency, gotToKnow, img, participantType string) (domain.Cyclist, error) {
+func (c *CyclistService) Create(idGroup, name, cpf, idUsr string, birth time.Time, email, bloodType, healthPlan, contactEmergency, gotToKnow, img, participantType string) (domain.Cyclist, error) {
 	cyclist := domain.NewCyclist()
 	cyclist.IdGroup = idGroup
 	cyclist.Name = name
@@ -55,6 +55,7 @@ func (c *CyclistService) Create(idGroup, name, cpf string, birth time.Time, emai
 	cyclist.GotToKnow = gotToKnow
 	cyclist.Img = img
 	cyclist.ParticipantType = participantType
+	cyclist.IdUsr = idUsr
 
 	cycl, err := c.Repository.Create(*cyclist)
 
@@ -72,7 +73,7 @@ func (c *CyclistService) FindAll() ([]domain.Cyclist, error) {
 	return cyclist, nil
 }
 
-func (c *CyclistService) UpdateCyclist(id string, idGroup string, name string, cpf string, birth time.Time, email string, bloodType string, healthPlan string, contactEmergency string, gotToKnow string, active bool, img string, participantType string, pedaling int, tours int, travels int) (domain.Cyclist, error) {
+func (c *CyclistService) UpdateCyclist(id, idGroup, name, cpf, idUsr string, birth time.Time, email string, bloodType string, healthPlan string, contactEmergency string, gotToKnow string, active bool, img string, participantType string, pedaling int, tours int, travels int) (domain.Cyclist, error) {
 
 	cyclist := domain.NewCyclist()
 	cyclist.Id = id
@@ -91,6 +92,7 @@ func (c *CyclistService) UpdateCyclist(id string, idGroup string, name string, c
 	cyclist.Pedaling = pedaling
 	cyclist.Tours = tours
 	cyclist.Travels = travels
+	cyclist.IdUsr = idUsr
 
 	cycli, err := c.Repository.UpdateCyclist(*cyclist)
 
